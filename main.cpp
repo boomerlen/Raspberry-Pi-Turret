@@ -1,4 +1,9 @@
+// This is the code for the Raspberry Pi component of the trret.
+
 #include <iostream>
+#incluce <sys/types.h>
+#include <sys/socket.h>
+
 
 #define GPIO_GUN_MOTOR_SIGNAL_PIN 4 // GPIO4 or pin 7
 #define GPIO_BASE_MOTOR_SIGNAL_PIN 17 // GPIO 17 or pin 11
@@ -15,6 +20,9 @@
 #define RETURN_GOOD 0
 #define RETURN_BAD 1
 
+#define WEB_PORT 80
+#define WEB_ADDRESS
+
 using namespace std;
 
 // Code has to:
@@ -25,5 +33,7 @@ using namespace std;
 int main()
 {
     cout << "Hello world!" << endl;
+    cout << "Initialising Turret. Setting up internet connectivity." << endl;
+
     return 0;
 }

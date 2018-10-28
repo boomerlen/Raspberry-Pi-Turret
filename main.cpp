@@ -21,7 +21,6 @@ using namespace std;
 // Do whatever setup is necessary to output to GPIO
 // Contact webserver to get commands
 // Download commands and evaluate them
-// Also keep track of servo positions so that when the height motors max out we can return some other code at them
 
 int main()
 {

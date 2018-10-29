@@ -3,7 +3,8 @@
 #include <iostream>
 #incluce <sys/types.h>
 #include <sys/socket.h>
-
+#include <netinet/in.h>
+#include <netdb.h>
 
 #define GPIO_GUN_MOTOR_SIGNAL_PIN 4 // GPIO4 or pin 7
 #define GPIO_BASE_MOTOR_SIGNAL_PIN 17 // GPIO 17 or pin 11
@@ -34,6 +35,27 @@ int main()
 {
     cout << "Hello world!" << endl;
     cout << "Initialising Turret. Setting up internet connectivity." << endl;
+
+
+    int sockfd, n;
+    struct sockaddr_in serv_addr;
+    struct hostent *server;
+
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if(sockfd < 0)
+        cout << "ERROR opening socket" << endl;
+
+    server = gethostbyname(WEB_ADDRESS);
+    if(server == NULL)
+    {
+        cout << "ERROR no such host. Terminate the program." << endl;
+        return 1;
+    }
+
+    bzero((char *) &serv_addr, sizeof(serv_addr));
+    serv_addr.sin_family = AF_INET;
+    bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr, server->h_length);
+    serv_addr.sin_port = htons(WEB_PORT);
 
     return 0;
 }

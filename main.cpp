@@ -17,12 +17,13 @@
 #define COMMAND_DOWN 3
 #define COMMAND_RIGHT 4
 #deinfe COMMAND_LEFT 5
+#define TERMINATE_CONNECTION 6
 
 #define RETURN_GOOD 0
 #define RETURN_BAD 1
 
-#define WEB_PORT 80
-#define WEB_ADDRESS
+#define WEB_PORT 80 // Port of server to be used
+#define WEB_ADDRESS // In reality this is just the address of a server
 
 using namespace std;
 
@@ -31,12 +32,17 @@ using namespace std;
 // Contact webserver to get commands
 // Download commands and evaluate them
 
+void executeCommand(int command /*Whatever object is needed for GPIO logic*/)
+{
+
+}
+
 int main()
 {
     cout << "Hello world!" << endl;
     cout << "Initialising Turret. Setting up internet connectivity." << endl;
 
-
+    // Start with networking setup
     int sockfd, n;
     struct sockaddr_in serv_addr;
     struct hostent *server;
@@ -48,7 +54,7 @@ int main()
     server = gethostbyname(WEB_ADDRESS);
     if(server == NULL)
     {
-        cout << "ERROR no such host. Terminate the program." << endl;
+        cout << "ERROR no such host. Terminating the program." << endl;
         return 1;
     }
 
@@ -57,5 +63,30 @@ int main()
     bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr, server->h_length);
     serv_addr.sin_port = htons(WEB_PORT);
 
+    if(connect(sockfd,&serv_addr, sizeof(serv_addr)) < 0)
+    {
+        cout << "ERROR connecting. Terminating the program." << endl;
+        return 1;
+    }
+
+    // Initialise GPIO here
+
+    // Read from server, take whatever command is being processed and execute it
+    int n;
+    while(1)
+    {
+        n = read(sockfd, buffer, 16);
+        if(n < 0)
+        {
+            cout << "ERROR reading socket. Terminating program." << endl;
+            return 1;
+        }
+        if(n == TERMINATE_CONNECTION)
+        {
+            cout << "Goodbye!" << endl;
+            return 0;
+        }
+        executeCommand(n);
+    }
     return 0;
 }

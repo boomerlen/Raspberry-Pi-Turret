@@ -1,12 +1,12 @@
 // This is the code for the Raspberry Pi component of the trret.
 
 #include <iostream>
-#incluce <sys/types.h>
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
 
-#define GPIO_GUN_MOTOR_SIGNAL_PIN 4 // GPIO4 or pin 7
+#define GPIO_GUN_MOTOR_SIGNAL_PIN 4 // GPIO4 or pin 7 - Pin controls the rear of the gun vertically, pointing downwards
 #define GPIO_BASE_MOTOR_SIGNAL_PIN 17 // GPIO 17 or pin 11
 #define GPIO_TIP_MOTOR_SIGNAL_PIN 27 // GPIO 27 or pin 13
 #define GPIO_REAR_MOTOR_SIGNAL_PIN 22 // GPIO 22 or pin 15

@@ -60,7 +60,7 @@ class app:
         def toggleAuto():
             pass
 
-        # Top Frame First 
+        # Top Frame First
         topFrameText = Label(topFrame, text="Display:")
         camDisplayCanvas = Canvas(topFrame, height=self.CAMERA_DISPLAY_HEIGHT, width=self.CAMERA_DISPLAY_LENGTH)
 
@@ -71,3 +71,4 @@ class app:
         rightControlButton = Button(bottomFrame, text="Right", command=right)
 
         fireButton = Button(bottomFrame, text="FIRE", command=fire)
+        autoToggle = Button(bottomFrame, text="Toggle Auto", command=toggleAuto)

@@ -97,4 +97,13 @@ class app:
         fireButton.grid(row=1, column=5)
         autoToggle.grid(row=2, column=5)
 
+        # Camera Feed
+        def updateCamera(): # do some update camera shiz
+            camIMG = netHandler.cameraOutput
+            netHandler.updateCamFeed()
+
+            # do thing 
+
+        camDisplayCanvas.after(10, callback=updateCamera)
+
         root.mainloop()

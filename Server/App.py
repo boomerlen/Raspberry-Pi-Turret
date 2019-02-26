@@ -12,19 +12,19 @@ class app:
     root = None
     netHandler = None
 
-    CAMERA_DISPLAY_HEIGHT = 720 #720p
-    CAMERA_DISPLAY_LENGTH = 1280
+    CAMERA_DISPLAY_HEIGHT = 480 #720 #720p
+    CAMERA_DISPLAY_LENGTH = 640 #1280
 
-    def __init__(): # Do setup
+    def __init__(self): # Do setup
         netHandler = network()
 
-    def restart():
+    def restart(self):
         pass
 
-    def settings():
+    def settings(self):
         pass
 
-    def run(): # Run program
+    def run(self): # Run program
         root = Tk()
         root.title("Turret Control")
 
@@ -33,12 +33,13 @@ class app:
         menubar = Menu(root)
 
         conMenu = Menu(menubar, tearoff=0)
-        conMenu.add_command(label="Reconnect", command=self.restart)
+        conMenu.add_command(label="Reset Socket", command=self.restart)
         conMenu.add_command(label="Settings", command=self.settings)
-        conMenu.add_seperator()
+        conMenu.add_separator()
         conMenu.add_command(label="Quit", command=quit)
 
         menubar.add_cascade(label="Connection", menu=conMenu)
+        root.config(menu=menubar)
 
         mainFrame = Frame(root)
         mainFrame.pack()
@@ -65,10 +66,35 @@ class app:
         camDisplayCanvas = Canvas(topFrame, height=self.CAMERA_DISPLAY_HEIGHT, width=self.CAMERA_DISPLAY_LENGTH)
 
         # Bottom Frame
-        upControlButton = Button(bottomFrame, text="Up", command=up)
-        downControlButton = Button(bottomFrame, text="Down", command=down)
-        leftControlButton = Button(bottomFrame, text="Left", command=left)
-        rightControlButton = Button(bottomFrame, text="Right", command=right)
+
+        # Text frame
+        controlButtonFrame = LabelFrame(bottomFrame, text="Camera Controls")
+
+        upControlButton = Button(controlButtonFrame, text="Up", command=up)
+        downControlButton = Button(controlButtonFrame, text="Down", command=down)
+        leftControlButton = Button(controlButtonFrame, text="Left", command=left)
+        rightControlButton = Button(controlButtonFrame, text="Right", command=right)
 
         fireButton = Button(bottomFrame, text="FIRE", command=fire)
         autoToggle = Button(bottomFrame, text="Toggle Auto", command=toggleAuto)
+
+        # Geometry
+        topFrame.grid(row=0, column=0)
+        bottomFrame.grid(row=1, column=0)
+
+        # top
+        topFrameText.grid(row=0, column=0, columnspan=2)
+        camDisplayCanvas.grid(row=1, column=0)
+
+        # bottom
+        controlButtonFrame.grid(row=0, column=0, columnspan=3, rowspan=3)
+
+        upControlButton.grid(row=0, column=1)
+        downControlButton.grid(row=2, column=1)
+        leftControlButton.grid(row=1, column=0)
+        rightControlButton.grid(row=1, column=2)
+
+        fireButton.grid(row=1, column=5)
+        autoToggle.grid(row=2, column=5)
+
+        root.mainloop()

@@ -11,4 +11,4 @@
 from App import *
 
 application = app()
-app.run()
+application.run()

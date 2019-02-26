@@ -22,7 +22,7 @@
 #define RETURN_GOOD 0
 #define RETURN_BAD 1
 
-#define WEB_PORT 80 // Port of server to be used
+#define WEB_PORT 12000 // Port of server to be used
 #define WEB_ADDRESS // In reality this is just the address of a server
 
 using namespace std;

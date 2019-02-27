@@ -6,18 +6,18 @@
 #include <netinet/in.h>
 #include <netdb.h>
 
-#define GPIO_GUN_MOTOR_SIGNAL_PIN 4 // GPIO4 or pin 7 - Pin controls the rear of the gun vertically, pointing downwards
-#define GPIO_BASE_MOTOR_SIGNAL_PIN 17 // GPIO 17 or pin 11
-#define GPIO_TIP_MOTOR_SIGNAL_PIN 27 // GPIO 27 or pin 13
-#define GPIO_REAR_MOTOR_SIGNAL_PIN 22 // GPIO 22 or pin 15
+#define GPIO_GUN_MOTOR_SIGNAL_PIN 4 // GPIO4 or pin 7 - Firing mechanism
+#define GPIO_BASE_MOTOR_SIGNAL_PIN 17 // GPIO 17 or pin 11 - Rotates base of gun
+#define GPIO_TIP_MOTOR_SIGNAL_PIN 27 // GPIO 27 or pin 13 - Moves tip of gun vertically
+#define GPIO_REAR_MOTOR_SIGNAL_PIN 22 // GPIO 22 or pin 15 - Moves back of gun vertically
 #define GPIO_GROUND 14 // GND
 
-#define COMMAND_FIRE 1
-#define COMMAND_UP 2
-#define COMMAND_DOWN 3
+#define COMMAND_FIRE 0
+#define COMMAND_UP 1
+#define COMMAND_DOWN 2
 #define COMMAND_RIGHT 4
-#deinfe COMMAND_LEFT 5
-#define TERMINATE_CONNECTION 6
+#deinfe COMMAND_LEFT 3
+#define TERMINATE_CONNECTION 5
 
 #define RETURN_GOOD 0
 #define RETURN_BAD 1

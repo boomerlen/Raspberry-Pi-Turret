@@ -11,12 +11,16 @@ from Resolve import *
 class app:
     root = None
     netHandler = None
+    commandResolveHandler = None
 
     CAMERA_DISPLAY_HEIGHT = 480 #720 #720p
     CAMERA_DISPLAY_LENGTH = 640 #1280
 
+    auto = False
+
     def __init__(self): # Do setup
         netHandler = network()
+        commandResolveHandler = resolve(False)
 
     def restart(self):
         pass
@@ -101,9 +105,11 @@ class app:
         def updateCamera(): # do some update camera shiz
             camIMG = netHandler.cameraOutput
             netHandler.updateCamFeed()
+            if auto:
+                commandResolveHandler.autoAim()
 
-            # do thing 
+            # do thing
 
-        camDisplayCanvas.after(10, callback=updateCamera)
+        camDisplayCanvas.after(10, updateCamera)
 
         root.mainloop()

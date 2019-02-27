@@ -19,8 +19,8 @@ class app:
     auto = False
 
     def __init__(self): # Do setup
-        netHandler = network()
-        commandResolveHandler = resolve(False)
+        self.netHandler = network()
+        self.commandResolveHandler = resolve(False)
 
     def restart(self):
         pass
@@ -53,15 +53,35 @@ class app:
 
         # Functions
         def up():
-            pass
+            try:
+                self.netHandler.send(self.commandResolveHandler.up())
+                print("up")
+            except Exception as exception:
+                print("Error @ line 60" + exception.__class__.__name__)
         def down():
-            pass
+            try:
+                self.netHandler.send(self.commandResolveHandler.down())
+                print("down")
+            except Exception as exception:
+                print("Error @ line 66: " + exception.__class__.__name__)
         def left():
-            pass
+            try:
+                self.netHandler.send(self.commandResolveHandler.left())
+                print("left")
+            except Exception as exception:
+                print("Error @ line 72" + exception.__class__.__name__)
         def right():
-            pass
+            try:
+                self.netHandler.send(self.commandResolveHandler.right())
+                print("right")
+            except Exception as exception:
+                print("Error @ line 78" + exception.__class__.__name__)
         def fire():
-            pass
+            try:
+                self.netHandler.send(self.commandResolveHandler.fire())
+                print("fire")
+            except Exception as exception:
+                print("Error @ line 84" + exception.__class__.__name__)
         def toggleAuto():
             pass
 
@@ -103,12 +123,14 @@ class app:
 
         # Camera Feed
         def updateCamera(): # do some update camera shiz
-            camIMG = netHandler.cameraOutput
-            netHandler.updateCamFeed()
-            if auto:
-                commandResolveHandler.autoAim()
-
-            # do thing
+            try:
+                camIMG = self.netHandler.cameraOutput
+                self.netHandler.updateCamFeed() # Thread this?
+                if auto:
+                    self.commandResolveHandler.autoAim(camIMG)
+                # do thing - display camIMG on canvas
+            except:
+                pass # this is to catch the self.nethandler =/= NoneType
 
         camDisplayCanvas.after(10, updateCamera)
 

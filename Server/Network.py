@@ -23,6 +23,7 @@ class network:
         "Returns once the socket has a connection"
         def list():
             self.s.listen()
+            self.s.send(10)
             return True
 
         threading.Thread(target=list).start()
@@ -39,7 +40,7 @@ class network:
         return False
 
     def send(self, command):
-        self.s.send(command)
+        self.s.send(command) # TypeError for some reason...
         return None
 
     def updateCamFeed(self):

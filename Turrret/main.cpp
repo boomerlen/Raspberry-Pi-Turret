@@ -34,7 +34,7 @@ using namespace std;
 
 void executeCommand(int command /*Whatever object is needed for GPIO logic*/)
 {
-
+  cout << command << endl;
 }
 
 int main()
@@ -72,7 +72,6 @@ int main()
     // Initialise GPIO here
 
     // Read from server, take whatever command is being processed and execute it
-    int n;
     while(1)
     {
         n = read(sockfd, buffer, 16);

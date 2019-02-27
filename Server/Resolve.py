@@ -33,5 +33,5 @@ class resolve:
     def down(self):
         return self.DOWN
 
-    def autoAim(self):
+    def autoAim(self, input):
         pass

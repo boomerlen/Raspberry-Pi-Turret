@@ -1,10 +1,13 @@
 // This is the code for the Raspberry Pi component of the trret.
 
 #include <iostream>
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <sys/un.h>
 #include <netdb.h>
+#include <string.h>
 
 #define GPIO_GUN_MOTOR_SIGNAL_PIN 4 // GPIO4 or pin 7 - Firing mechanism
 #define GPIO_BASE_MOTOR_SIGNAL_PIN 17 // GPIO 17 or pin 11 - Rotates base of gun
@@ -16,14 +19,14 @@
 #define COMMAND_UP 1
 #define COMMAND_DOWN 2
 #define COMMAND_RIGHT 4
-#deinfe COMMAND_LEFT 3
+#define COMMAND_LEFT 3
 #define TERMINATE_CONNECTION 5
 
 #define RETURN_GOOD 0
 #define RETURN_BAD 1
 
 #define WEB_PORT 12000 // Port of server to be used
-#define WEB_ADDRESS // In reality this is just the address of a server
+#define WEB_ADDRESS "localhost"// In reality this is just the address of a server
 
 using namespace std;
 
@@ -32,9 +35,11 @@ using namespace std;
 // Contact webserver to get commands
 // Download commands and evaluate them
 
-void executeCommand(int command /*Whatever object is needed for GPIO logic*/)
+int executeCommand(char command[4] /*Whatever object is needed for GPIO logic*/)
 {
   cout << command << endl;
+
+  return RETURN_GOOD;
 }
 
 int main()
@@ -43,49 +48,47 @@ int main()
     cout << "Initialising Turret. Setting up internet connectivity." << endl;
 
     // Start with networking setup
-    int sockfd, n;
-    struct sockaddr_in serv_addr;
-    struct hostent *server;
+    int sockfd, n, servlen, ret;
+    struct sockaddr_un serv_addr;
+    char buffer[4];
+    //int buffer;
 
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if(sockfd < 0)
-        cout << "ERROR opening socket" << endl;
+    bzero((char *)&serv_addr, sizeof(serv_addr));
+    serv_addr.sun_family = AF_UNIX;
+    strcpy(serv_addr.sun_path, WEB_ADDRESS);
+    servlen = strlen(serv_addr.sun_path) + sizeof(serv_addr.sun_family);
 
-    server = gethostbyname(WEB_ADDRESS);
-    if(server == NULL)
+    if((sockfd = socket(AF_UNIX, SOCK_STREAM, 0)) < 0)
+      cout << "Error coreating socket" << endl;
+
+    if(connect(sockfd, (struct sockaddr *)&serv_addr, servlen) < 0)
     {
-        cout << "ERROR no such host. Terminating the program." << endl;
-        return 1;
+      cout << "Error connecting. Terminating." << endl;
     }
 
-    bzero((char *) &serv_addr, sizeof(serv_addr));
-    serv_addr.sin_family = AF_INET;
-    bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr, server->h_length);
-    serv_addr.sin_port = htons(WEB_PORT);
-
-    if(connect(sockfd,&serv_addr, sizeof(serv_addr)) < 0)
-    {
-        cout << "ERROR connecting. Terminating the program." << endl;
-        return 1;
-    }
-
-    // Initialise GPIO here
-
-    // Read from server, take whatever command is being processed and execute it
+    cout << "Connected." << endl;
     while(1)
     {
-        n = read(sockfd, buffer, 16);
-        if(n < 0)
-        {
-            cout << "ERROR reading socket. Terminating program." << endl;
-            return 1;
-        }
-        if(n == TERMINATE_CONNECTION)
-        {
-            cout << "Goodbye!" << endl;
-            return 0;
-        }
-        executeCommand(n);
+      bzero(buffer, 4);
+      n = read(sockfd, buffer, 4);
+      if(n < 0)
+      {
+        //cout << "Error reading from socket" << endl;
+        //return 1;
+      }
+      if(n == TERMINATE_CONNECTION)
+      {
+        n = write(sockfd, RETURN_GOOD, 1);
+        cout << "Terminating Connection" << endl;
+        break;
+      }
+      ret = executeCommand(buffer);
+      n = write(sockfd, (char *)ret, sizeof(ret));
+      if(n < 0)
+      {
+        //cout << "Error writing to socket" << endl;
+        //return 1;
+      }
     }
     return 0;
 }

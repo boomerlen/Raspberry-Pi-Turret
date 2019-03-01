@@ -53,11 +53,11 @@ class app:
 
         # Functions
         def up():
-            try:
-                self.netHandler.send(self.commandResolveHandler.up())
-                print("up")
-            except Exception as exception:
-                print("Error @ line 60" + exception.__class__.__name__)
+            #try:
+            self.netHandler.send(self.commandResolveHandler.up())
+            print("up")
+            #except Exception as exception:
+            #    print("Error @ line 60" + exception.__class__.__name__)
         def down():
             try:
                 self.netHandler.send(self.commandResolveHandler.down())
@@ -122,16 +122,16 @@ class app:
         autoToggle.grid(row=2, column=5)
 
         # Camera Feed
-        def updateCamera(): # do some update camera shiz
+        def update(): # do some update camera shiz
             try:
                 camIMG = self.netHandler.cameraOutput
-                self.netHandler.updateCamFeed() # Thread this?
+                self.netHandler.updateCamFeed()
                 if auto:
                     self.commandResolveHandler.autoAim(camIMG)
                 # do thing - display camIMG on canvas
             except:
                 pass # this is to catch the self.nethandler =/= NoneType
 
-        camDisplayCanvas.after(10, updateCamera)
+        camDisplayCanvas.after(10, update)
 
         root.mainloop()

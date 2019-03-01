@@ -8,7 +8,9 @@ class resolve:
     DOWN = 2
     LEFT = 3
     RIGHT = 4
-    TERMINATE = 5
+    TERMINATE = 6
+    PIC = 5
+    SHUTDOWN = 7
 
     auto = False
 
@@ -35,3 +37,12 @@ class resolve:
 
     def autoAim(self, input):
         pass
+
+    def terminate(self):
+        return self.TERMINATE
+
+    def shutdown(self):
+        return self.SHUTDOWN
+
+    def requestPic(self):
+        return self.PIC
